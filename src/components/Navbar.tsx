@@ -31,8 +31,8 @@ const Navbar = () => {
     <nav
       className={
         scrolled
-          ? `${raleway.className} w-full h-auto fixed top-0 pt-4 z-50 `
-          : `${raleway.className} w-full h-auto fixed top-0 pt-0 z-50 bg-white`
+          ? `${raleway.className} w-full h-auto fixed top-0 pt-4 z-40 `
+          : `${raleway.className} w-full h-auto fixed top-0 pt-0 z-40 bg-white`
       }
     >
       <div

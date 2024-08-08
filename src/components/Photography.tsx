@@ -12,6 +12,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { XIcon } from "lucide-react";
+import { Button } from "./ui/button";
+import { AnimatePresence, motion } from "framer-motion";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -22,76 +25,123 @@ const bhineka = localFont({
 });
 
 const Photography = () => {
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
+  const plugin = React.useRef();
   const [clicked, setClicked] = useState(false);
   const Images = [
     "/intern.png",
+    "/intern.png",
+    "/intern.png",
+    // "/newoffice.png",
+    // "/villar.jpg",
+    // "/ja.jpg",
     "/newoffice.png",
-    "/villar.jpg",
-    "/ja.jpg",
     "/newoffice.png",
-    "/two.png",
-    "/ja.jpg",
-    "/newoffice.png",
-    "/two.png",
-    "/newoffice.png",
-    "/villar.jpg",
-    "/ja.jpg",
-    "/newoffice.png",
-    "/logo.png",
-    "/landingbg.png",
-    "/newdvices.png",
-    "/rose.png",
-    "/triplewave.png",
-    "/two.png",
-    "/yellow.png",
-    "/two.png",
-    "/villar.jpg",
+    // "/two.png",
+    // "/ja.jpg",
+    // "/newoffice.png",
+    // "/two.png",
+    // "/newoffice.png",
+    // "/villar.jpg",
+    // "/ja.jpg",
+    // "/newoffice.png",
+    // "/logo.png",
+    // "/landingbg.png",
+    // "/newdvices.png",
+    // "/rose.png",
+    // "/triplewave.png",
+    // "/two.png",
+    // "/yellow.png",
+    // "/two.png",
+    // "/villar.jpg",
   ];
-  return (
-    <div className="w-full h-full relative py-20 bg-gray-100">
-      <h1
-        className={`${raleway.className} text-5xl text-center pb-12 font-semibold text-gray-700`}
-      >
-        Checkout our{" "}
-        <span
-          className={`${bhineka.className} text-7xl tracking-widest text-red-600`}
-        >
-          Photography
-        </span>{" "}
-        works!
-      </h1>
-      {/* <div className="w-full max-w-6xl mx-auto gap-2 space-y-2 columns-2 px-2 md:columns-3 lg:columns-4"> */}
-      <div className="w-full flex">
-        <Carousel
-          plugins={[plugin.current]}
-          className="w-full max-w-xs mx-auto flex "
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
-        >
-          <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1">
-                  <Card className="">
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
-                      {Images.map((item, index) => (
-                        <img src={item} key={index} alt="" className="" />
-                      ))}
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
 
-      {/* </div> */}
+  const [activePic, setActivePic] = useState<string>("");
+  return (
+    <div className={`${raleway.className} w-full h-auto relative`}>
+      <div className="flex flex-col md:flex-row justify-around px-4 gap-5">
+        <div className="flex items-center justify-center">
+          <h1 className="text-xl sm:text-3xl lg:text-4xl max-w-2xl uppercase font-semibold mx-auto">
+            Checkout some of our{" "}
+            <span className="text-red-600">Photography</span> works!
+          </h1>
+        </div>
+        <div className=" w-full py-6 mb-12 ">
+          <Carousel
+            opts={{
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 2000,
+              }),
+            ]}
+            className="w-full py-8"
+          >
+            <CarouselContent className="">
+              {Images.map((item, index) => (
+                <CarouselItem className="basic-1/3 md:basis-2/3 lg:basis-2/3 xl:basis-1/3 py-4 w-auto h-full">
+                  <div onClick={() => setActivePic(item)} className=" ">
+                    <img
+                      src={item}
+                      alt=""
+                      className="object-contain md:object-contain w-96 h-full"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-5" />
+            <CarouselNext className="absolute right-5" />
+          </Carousel>
+        </div>
+
+        {activePic && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 0,
+              }}
+              onClick={() => setActivePic("")}
+              className="fixed inset-0 flex items-center justify-center bg-background/80 z-50"
+            >
+              <Button
+                size="icon"
+                onClick={() => setActivePic("")}
+                variant={"default"}
+                className="absolute top-5 right-5 rounded-full"
+              >
+                <XIcon size={16} />
+              </Button>
+              <motion.div
+                onClick={() => setActivePic("")}
+                initial={{
+                  scale: 0.7,
+                }}
+                animate={{
+                  scale: 1,
+                }}
+                exit={{
+                  scale: 0.7,
+                }}
+                className="w-full h-full max-w-5xl p-5"
+              >
+                <img
+                  onClick={() => setActivePic("")}
+                  src={activePic}
+                  alt=""
+                  className="object-contain w-full h-full rounded-xl overflow-hidden"
+                />
+              </motion.div>
+            </motion.div>
+          </AnimatePresence>
+        )}
+      </div>
     </div>
   );
 };
